@@ -1,0 +1,293 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/sapegin/grunt-bower-concat"
+
+    >grunt-bower-concat (v1.0.0)</a>
+</h1>
+<h4>Automatic concatenation of installed Bower components in right order.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.grunt-bower-concat">module grunt-bower-concat</a><ol>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">grunt-bower-concat.</span>configTools</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">grunt-bower-concat.</span>dependencyTools</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.grunt-bower-concat.configTools">module grunt-bower-concat.configTools</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.configTools.destinationConfigExists">
+            function <span class="apidocSignatureSpan">grunt-bower-concat.configTools.</span>destinationConfigExists
+            <span class="apidocSignatureSpan">(data)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.configTools.extractDestData">
+            function <span class="apidocSignatureSpan">grunt-bower-concat.configTools.</span>extractDestData
+            <span class="apidocSignatureSpan">(data)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.configTools.getValuesOfObject">
+            function <span class="apidocSignatureSpan">grunt-bower-concat.configTools.</span>getValuesOfObject
+            <span class="apidocSignatureSpan">(object)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.grunt-bower-concat.dependencyTools">module grunt-bower-concat.dependencyTools</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.dependencyTools.buildDependencyGraph">
+            function <span class="apidocSignatureSpan">grunt-bower-concat.dependencyTools.</span>buildDependencyGraph
+            <span class="apidocSignatureSpan">(module, dependencies, graph)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.dependencyTools.resolveDependencyGraph">
+            function <span class="apidocSignatureSpan">grunt-bower-concat.dependencyTools.</span>resolveDependencyGraph
+            <span class="apidocSignatureSpan">(module, resolved, unresolved, dependencies)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.grunt-bower-concat" id="apidoc.module.grunt-bower-concat">module grunt-bower-concat</a></h1>
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.grunt-bower-concat.configTools" id="apidoc.module.grunt-bower-concat.configTools">module grunt-bower-concat.configTools</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.configTools.destinationConfigExists" id="apidoc.element.grunt-bower-concat.configTools.destinationConfigExists">
+        function <span class="apidocSignatureSpan">grunt-bower-concat.configTools.</span>destinationConfigExists
+        <span class="apidocSignatureSpan">(data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function destinationConfigExists(data) {
+	if (data.dest) {
+		return data.dest instanceof Object || typeof data.dest === &#x27;string&#x27;;
+	}
+
+	return false;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.configTools.extractDestData" id="apidoc.element.grunt-bower-concat.configTools.extractDestData">
+        function <span class="apidocSignatureSpan">grunt-bower-concat.configTools.</span>extractDestData
+        <span class="apidocSignatureSpan">(data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function extractDestData(data) {
+
+	if (destinationConfigExists(data)) {
+		if (data.dest instanceof Object) {
+			return extractMultiDestValues(data.dest);
+		}
+		else {
+			return extractBackportDestination(data.dest);
+		}
+	}
+
+	return [];
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.configTools.getValuesOfObject" id="apidoc.element.grunt-bower-concat.configTools.getValuesOfObject">
+        function <span class="apidocSignatureSpan">grunt-bower-concat.configTools.</span>getValuesOfObject
+        <span class="apidocSignatureSpan">(object)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function getValues(object) {
+	var values = [];
+	Object.keys(object).forEach(function(key) {
+		values.push(object[key]);
+	});
+
+	return values.reverse();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.grunt-bower-concat.dependencyTools" id="apidoc.module.grunt-bower-concat.dependencyTools">module grunt-bower-concat.dependencyTools</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.dependencyTools.buildDependencyGraph" id="apidoc.element.grunt-bower-concat.dependencyTools.buildDependencyGraph">
+        function <span class="apidocSignatureSpan">grunt-bower-concat.dependencyTools.</span>buildDependencyGraph
+        <span class="apidocSignatureSpan">(module, dependencies, graph)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function buildDependencyGraph(module, dependencies, graph) {
+	if (module &#x26;&#x26; !graph[module]) {
+		graph[module] = [];
+	}
+
+	var dependencyNames = Object.keys(dependencies);
+	dependencyNames.forEach(function(dependencyName) {
+		var dependency = dependencies[dependencyName];
+
+		if (module &#x26;&#x26; graph[module].indexOf(dependencyName) === -1) {
+			graph[module].push(dependencyName);
+		}
+
+		// Traverse down to this dependency dependencies:
+		// Dependency-ception.
+		if (dependency.dependencies) {
+			buildDependencyGraph(dependencyName, dependency.dependencies, graph);
+		}
+	});
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.dependencyTools.resolveDependencyGraph" id="apidoc.element.grunt-bower-concat.dependencyTools.resolveDependencyGraph">
+        function <span class="apidocSignatureSpan">grunt-bower-concat.dependencyTools.</span>resolveDependencyGraph
+        <span class="apidocSignatureSpan">(module, resolved, unresolved, dependencies)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function resolveDependencyGraph(module, resolved, unresolved, dependencies) {
+	var moduleDependencies;
+	if (module) {
+		moduleDependencies = dependencies[module];
+		if (!moduleDependencies) {
+			throw new Error(&#x27;Component &#x27; + module + &#x27; not installed. Try bower install --save &#x27; + module);
+		}
+		unresolved.push(module);
+	}
+	else {
+		moduleDependencies = Object.keys(dependencies);
+	}
+
+	moduleDependencies.forEach(function(moduleDependency) {
+		if (resolved.indexOf(moduleDependency) === -1) {
+			if (unresolved.indexOf(moduleDependency) !== -1) {
+				throw new Error(&#x27;Circular reference detected for &#x27; + module + &#x27; - &#x27; + moduleDependency);
+			}
+
+			resolveDependencyGraph(moduleDependency, resolved, unresolved, dependencies);
+		}
+	});
+
+	if (module) {
+		resolved.push(module);
+		unresolved = unresolved.splice(unresolved.indexOf(module), 1);
+	}
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>

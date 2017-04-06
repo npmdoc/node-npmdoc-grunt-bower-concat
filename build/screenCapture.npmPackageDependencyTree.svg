@@ -1,0 +1,15 @@
+<svg height="190" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="190" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26">├── UNMET PEER DEPENDENCY grunt@&gt;=0.4.0</tspan>
+<tspan x="10" y="42">└─┬ grunt-bower-concat@1.0.0 </tspan>
+<tspan x="10" y="58">  ├── async@1.5.2 </tspan>
+<tspan x="10" y="74">  ├── bower@1.7.9 </tspan>
+<tspan x="10" y="90">  ├─┬ detective@4.3.2 </tspan>
+<tspan x="10" y="106">  │ ├── acorn@3.3.0 </tspan>
+<tspan x="10" y="122">  │ └── defined@1.0.0 </tspan>
+<tspan x="10" y="138">  ├── filesize@3.2.1 </tspan>
+<tspan x="10" y="154">  ├── lodash@4.3.0 </tspan>
+<tspan x="10" y="170">  └── underscore.string@3.2.3</tspan>
+</text>
+</svg>
