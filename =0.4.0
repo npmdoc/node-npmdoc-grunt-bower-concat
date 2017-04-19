@@ -14,7 +14,7 @@ npmdoc-grunt-bower-concat@0.0.1 /home/travis/build/npmdoc/node-npmdoc-grunt-bowe
   │   ├── map-obj@1.0.1 
   │   ├── minimist@1.2.0 
   │   ├─┬ normalize-package-data@2.3.6 
-  │   │ ├── hosted-git-info@2.4.1 
+  │   │ ├── hosted-git-info@2.4.2 
   │   │ ├─┬ is-builtin-module@1.0.0 
   │   │ │ └── builtin-modules@1.1.1 
   │   │ ├── semver@5.3.0 
@@ -80,7 +80,7 @@ npmdoc-grunt-bower-concat@0.0.1 /home/travis/build/npmdoc/node-npmdoc-grunt-bowe
   │ │ └── sprintf-js@1.0.3 
   │ └── esprima@2.7.3 
   ├─┬ minimatch@3.0.3 
-  │ └─┬ brace-expansion@1.1.6 
+  │ └─┬ brace-expansion@1.1.7 
   │   ├── balanced-match@0.4.2 
   │   └── concat-map@0.0.1 
   ├─┬ nopt@3.0.6 
