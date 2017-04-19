@@ -63,6 +63,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.grunt-bower-concat">
+            function <span class="apidocSignatureSpan"></span>grunt-bower-concat
+            <span class="apidocSignatureSpan">(grunt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">grunt-bower-concat.</span>configTools</span>
 
         </li>
@@ -132,6 +141,141 @@
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.grunt-bower-concat" id="apidoc.module.grunt-bower-concat">module grunt-bower-concat</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.grunt-bower-concat" id="apidoc.element.grunt-bower-concat.grunt-bower-concat">
+        function <span class="apidocSignatureSpan"></span>grunt-bower-concat
+        <span class="apidocSignatureSpan">(grunt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">grunt-bower-concat = function (grunt) {
+	&#x27;use strict&#x27;;
+
+	var path = require(&#x27;path&#x27;);
+	var fs = require(&#x27;fs&#x27;);
+	var filesize = require(&#x27;filesize&#x27;);
+	var bower = require(&#x27;bower&#x27;);
+	var detective = require(&#x27;detective&#x27;);
+	var async = require(&#x27;async&#x27;);
+	var _ = require(&#x27;lodash&#x27;);
+	_.str = require(&#x27;underscore.string&#x27;);
+	var dependencyTools = require(&#x27;../lib/dependencyTools&#x27;);
+	var configTools = require(&#x27;../lib/configTools&#x27;);
+
+	grunt.registerMultiTask(&#x27;bower_concat&#x27;, &#x27;Concatenate installed Bower packages.&#x27;, function() {
+		var dests = configTools.extractDestData(this.data);
+
+		// Require at least one of [`dest`, `cssDest`, `scssDest`]
+		if (Object.keys(dests).length === 0) {
+			throw grunt.util.error(&#x27;You should specify &#x22;dest&#x22; and/or &#x22;cssDest&#x22; properties in your Gruntfile.&#x27;);
+		}
+
+		var includes = ensureArray(this.data.include || []);
+		var excludes = ensureArray(this.data.exclude || []);
+		var dependencies = this.data.dependencies || {};
+		var mains = this.data.mainFiles || {};
+		var callback = this.data.callback;
+		var process = this.data.process;
+		var includeDev = this.data.includeDev === true;
+		var bowerOptions = this.data.bowerOptions || {};
+		var bowerDir = bowerOptions.relative !== false ? bower.config.cwd : &#x27;&#x27;;
+		var options = this.options({
+			separator: grunt.util.linefeed
+		});
+
+		var tasksOpen = dests.length;
+
+		var done = this.async();
+		dests.forEach(function(destination) {
+			bowerMainFiles(destination, function(files) {
+				var type = destination.assetType;
+				if (type === &#x27;js&#x27;) {
+					concatenateAndWriteFile(files, destination.path, options.separator);
+				}
+				else {
+					concatenateAndWriteFile(files, destination.path);
+				}
+				taskFinished();
+			});
+		});
+
+		<span class="apidocCodeCommentSpan">/**
+		 * As all Filetypes are now handled asynchronously this little helper waits
+		 * until every filetype is finished and will than call done()
+		 */
+</span>		function taskFinished() {
+			tasksOpen--;
+			if (tasksOpen === 0) {
+				done();
+			}
+		}
+
+		/**
+		 * Concatenates and writes a file
+		 *
+		 * @param {Array} files File contents
+		 * @param {String} destination File destination
+		 * @param {String} separator Files joined on this string
+		 */
+		function concatenateAndWriteFile(files, destination, separator) {
+			if (!destination || !files || !files.length) return;
+
+			files = _.map(files, process);
+
+			var src = files.join(separator || grunt.util.linefeed);
+			grunt.file.write(destination, src);
+			grunt.log.writeln(&#x27;File &#x27; + destination.cyan + &#x27; created.&#x27;);
+		}
+
+		/**
+		 * Finds suitable JS and CSS files for all installed Bower packages.
+		 *
+		 * @param {Array} Array of Destination Objects [{assetType: {String}, path: {String}}]
+		 * @param {Function} allDone function(bowerFiles) {}
+		 */
+		function bowerMainFiles(destination, allDone) {
+			async.parallel({
+				map: bowerList(&#x27;map&#x27;),
+				components: bowerList(&#x27;paths&#x27;)
+			}, function(err, lists) {
+				// Ensure all manual defined dependencies are contained in an array
+				if (dependencies) {
+					_.map(dependencies, function(value, key) {
+						dependencies[key] = ensureArray(value);
+					});
+				}
+
+				// Exclude devDependencies
+				var devDependencies = lists.map.pkgMeta.devDependencies;
+				if (devDependencies &#x26;&#x26; !includeDev) {
+					excludes = excludes.concat(Object.keys(devDependencies));
+				}
+
+				// Resolve dependency graph to ensure correct order of components when concat them
+				var resolvedDependencies = resolveDependencies(lists.map);
+
+				// List of main files
+				var files = {};
+				var groupStats = {};
+
+				_.each(lists.components, function(component, name) {
+					if (includes.length &#x26;&#x26; _.indexOf(includes, name) === -1) return;
+					if (excludes.length &#x26;&#x26; _.indexOf(excludes, name) !== -1) return;
+
+					var mainFiles = findMainFiles(name, component, lists.map.dependencies[name]);
+					if (mainFiles.length) {
+						if (callback) mainFiles = callback(mainFiles, name);
+
+						var filteredMainFiles = mainFiles.filter(function(file) {
+							return isFileExtension(file, &#x27;.&#x27; + destination.assetType);
+						});
+						if (grunt.option(&#x27;verbose&#x27;)) {
+							groupStats[name]  = filteredMainFiles.map(_.partial(toFileS ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
 

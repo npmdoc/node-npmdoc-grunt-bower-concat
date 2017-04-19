@@ -56,6 +56,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-bower-concat.grunt-bower-concat">
+            function <span class="apidocSignatureSpan"></span>grunt-bower-concat
+            <span class="apidocSignatureSpan">(grunt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">grunt-bower-concat.</span>configTools</span>
 
         </li>
@@ -125,6 +134,141 @@
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.grunt-bower-concat" id="apidoc.module.grunt-bower-concat">module grunt-bower-concat</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-bower-concat.grunt-bower-concat" id="apidoc.element.grunt-bower-concat.grunt-bower-concat">
+        function <span class="apidocSignatureSpan"></span>grunt-bower-concat
+        <span class="apidocSignatureSpan">(grunt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">grunt-bower-concat = function (grunt) {
+	'use strict';
+
+	var path = require('path');
+	var fs = require('fs');
+	var filesize = require('filesize');
+	var bower = require('bower');
+	var detective = require('detective');
+	var async = require('async');
+	var _ = require('lodash');
+	_.str = require('underscore.string');
+	var dependencyTools = require('../lib/dependencyTools');
+	var configTools = require('../lib/configTools');
+
+	grunt.registerMultiTask('bower_concat', 'Concatenate installed Bower packages.', function() {
+		var dests = configTools.extractDestData(this.data);
+
+		// Require at least one of [`dest`, `cssDest`, `scssDest`]
+		if (Object.keys(dests).length === 0) {
+			throw grunt.util.error('You should specify "dest" and/or "cssDest" properties in your Gruntfile.');
+		}
+
+		var includes = ensureArray(this.data.include || []);
+		var excludes = ensureArray(this.data.exclude || []);
+		var dependencies = this.data.dependencies || {};
+		var mains = this.data.mainFiles || {};
+		var callback = this.data.callback;
+		var process = this.data.process;
+		var includeDev = this.data.includeDev === true;
+		var bowerOptions = this.data.bowerOptions || {};
+		var bowerDir = bowerOptions.relative !== false ? bower.config.cwd : '';
+		var options = this.options({
+			separator: grunt.util.linefeed
+		});
+
+		var tasksOpen = dests.length;
+
+		var done = this.async();
+		dests.forEach(function(destination) {
+			bowerMainFiles(destination, function(files) {
+				var type = destination.assetType;
+				if (type === 'js') {
+					concatenateAndWriteFile(files, destination.path, options.separator);
+				}
+				else {
+					concatenateAndWriteFile(files, destination.path);
+				}
+				taskFinished();
+			});
+		});
+
+		<span class="apidocCodeCommentSpan">/**
+		 * As all Filetypes are now handled asynchronously this little helper waits
+		 * until every filetype is finished and will than call done()
+		 */
+</span>		function taskFinished() {
+			tasksOpen--;
+			if (tasksOpen === 0) {
+				done();
+			}
+		}
+
+		/**
+		 * Concatenates and writes a file
+		 *
+		 * @param {Array} files File contents
+		 * @param {String} destination File destination
+		 * @param {String} separator Files joined on this string
+		 */
+		function concatenateAndWriteFile(files, destination, separator) {
+			if (!destination || !files || !files.length) return;
+
+			files = _.map(files, process);
+
+			var src = files.join(separator || grunt.util.linefeed);
+			grunt.file.write(destination, src);
+			grunt.log.writeln('File ' + destination.cyan + ' created.');
+		}
+
+		/**
+		 * Finds suitable JS and CSS files for all installed Bower packages.
+		 *
+		 * @param {Array} Array of Destination Objects [{assetType: {String}, path: {String}}]
+		 * @param {Function} allDone function(bowerFiles) {}
+		 */
+		function bowerMainFiles(destination, allDone) {
+			async.parallel({
+				map: bowerList('map'),
+				components: bowerList('paths')
+			}, function(err, lists) {
+				// Ensure all manual defined dependencies are contained in an array
+				if (dependencies) {
+					_.map(dependencies, function(value, key) {
+						dependencies[key] = ensureArray(value);
+					});
+				}
+
+				// Exclude devDependencies
+				var devDependencies = lists.map.pkgMeta.devDependencies;
+				if (devDependencies &amp;&amp; !includeDev) {
+					excludes = excludes.concat(Object.keys(devDependencies));
+				}
+
+				// Resolve dependency graph to ensure correct order of components when concat them
+				var resolvedDependencies = resolveDependencies(lists.map);
+
+				// List of main files
+				var files = {};
+				var groupStats = {};
+
+				_.each(lists.components, function(component, name) {
+					if (includes.length &amp;&amp; _.indexOf(includes, name) === -1) return;
+					if (excludes.length &amp;&amp; _.indexOf(excludes, name) !== -1) return;
+
+					var mainFiles = findMainFiles(name, component, lists.map.dependencies[name]);
+					if (mainFiles.length) {
+						if (callback) mainFiles = callback(mainFiles, name);
+
+						var filteredMainFiles = mainFiles.filter(function(file) {
+							return isFileExtension(file, '.' + destination.assetType);
+						});
+						if (grunt.option('verbose')) {
+							groupStats[name]  = filteredMainFiles.map(_.partial(toFileS ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
 
